@@ -48,7 +48,6 @@ class MovieListSerializer(MovieSerializer):
 class MovieDetailSerializer(MovieSerializer):
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
-
     class Meta:
         model = Movie
         fields = ("id", "title", "description", "duration", "genres", "actors")
@@ -70,7 +69,6 @@ class MovieSessionListSerializer(MovieSessionSerializer):
     )
 
     tickets_available = serializers.IntegerField(read_only=True)
-
     class Meta:
         model = MovieSession
         fields = (
@@ -98,10 +96,10 @@ class MovieSessionDetailSerializer(MovieSessionSerializer):
         read_only=True,
         source="tickets",
     )
-
     class Meta:
         model = MovieSession
         fields = ("id", "show_time", "movie", "cinema_hall", "taken_places")
+
 
 class TicketSerializer(serializers.ModelSerializer):
     movie_session = MovieSessionListSerializer(many=False, read_only=True)
@@ -125,6 +123,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     tickets = TicketSerializer(many=True, read_only=False, allow_empty=False)
+
 
     class Meta:
         model = Order
